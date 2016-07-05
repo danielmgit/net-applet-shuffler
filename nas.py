@@ -364,6 +364,10 @@ class CampaignExecuter:
         parser.usage = "Executer"
         parser.add_option("-v", "--verbose", dest="verbose", default=False,
                           action="store_true", help="show verbose")
+        parser.add_option("-i", "--info", dest="info", default=None,
+                          type="string", help="optional, pass an information "
+                                              "string here that will be made "
+                                              "available in a campaign")
         self.opts, args = parser.parse_args(sys.argv[0:])
 
         if len(args) < 3:
@@ -420,7 +424,10 @@ class CampaignExecuter:
         # applet name and args, creates AppletExecuter() and calls its run
         xchange.exec = self.execute_applet
         # starts the campaign run
-        self.campaign.main(xchange)
+        if self.opts.info:
+            self.campaign.main_info(xchange, self.opts.info)
+        else:
+            self.campaign.main(xchange)
 
 
 class CampaignLister:
